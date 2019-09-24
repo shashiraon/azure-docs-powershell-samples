@@ -1,7 +1,7 @@
 # Variables for common values
 $resourceGroup = "myResourceGroup"
-$location = "westeurope"
-$vmName = "myVM"
+$location = "eastus"
+$vmName = "SstVM"
 
 # Define user name and blank password
 $securePassword = ConvertTo-SecureString ' ' -AsPlainText -Force
@@ -14,7 +14,7 @@ New-AzResourceGroup -Name $resourceGroup -Location $location
 $subnetConfig = New-AzVirtualNetworkSubnetConfig -Name mySubnet -AddressPrefix 192.168.1.0/24
 
 # Create a virtual network
-$vnet = New-AzVirtualNetwork -ResourceGroupName $resourceGroup -Location $location `
+$vnet = New-AzVirtualNetwork -ResourceGroupName $resourceUbuntuServerGroup -Location $location `
   -Name MYvNET -AddressPrefix 192.168.0.0/16 -Subnet $subnetConfig
 
 # Create a public IP address and specify a DNS name
@@ -37,7 +37,7 @@ $nic = New-AzNetworkInterface -Name myNic -ResourceGroupName $resourceGroup -Loc
 # Create a virtual machine configuration
 $vmConfig = New-AzVMConfig -VMName $vmName -VMSize Standard_D1 |
 Set-AzVMOperatingSystem -Linux -ComputerName $vmName -Credential $cred -DisablePasswordAuthentication |
-Set-AzVMSourceImage -PublisherName Canonical -Offer UbuntuServer -Skus 14.04.2-LTS -Version latest |
+Set-AzVMSourceImage -PublisherName Canonical -Offer CentOS -Skus 7.5 -Version latest |
 Add-AzVMNetworkInterface -Id $nic.Id
 
 # Configure SSH Keys
